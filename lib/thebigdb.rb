@@ -1,4 +1,5 @@
 require "./thebigdb/module_attribute_accessors"
+require "./thebigdb/shortcut"
 
 module TheBigDB
 
