@@ -1,2 +1,2 @@
-class TheBigDB
+module TheBigDB
 end
