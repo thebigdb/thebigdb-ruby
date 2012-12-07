@@ -1,5 +1,9 @@
-require "./thebigdb/module_attribute_accessors"
-require "./thebigdb/shortcut"
+%w(
+  module_attribute_accessors
+  shortcut
+).each do |file_name|
+  require File.join(File.dirname(__FILE__), 'thebigdb', file_name)
+end
 
 module TheBigDB
 
