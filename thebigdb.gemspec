@@ -10,9 +10,16 @@ Gem::Specification.new do |s|
   s.description = "TheBigDB a simply structured open database of real life facts. See http://thebigdb.com for details."
   s.authors = ["Christophe Maximin"]
   s.email = "christophe@thebigdb.com"
-  s.homepage = "http://rubygems.org/gems/thebigdb"
+  s.homepage = "http://thebigdb.com"
+
+  s.platform = Gem::Platform::RUBY
 
   s.add_development_dependency "rspec", "~> 2.12"
+  s.add_development_dependency "guard-rspec", "~> 2.3"
+  s.add_development_dependency "rb-inotify"
+  s.add_development_dependency "rb-fsevent"
+  s.add_development_dependency "rb-fchange"
+
 
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")

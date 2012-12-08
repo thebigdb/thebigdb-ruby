@@ -17,3 +17,4 @@ log/*
 *.swp
 .rvmrc
 *.gem
+tmp/*
