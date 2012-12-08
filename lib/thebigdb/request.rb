@@ -2,23 +2,23 @@ module TheBigDB
   class Request
     attr_reader :http, :http_request, :http_response
 
-    # The request is prepared with the current values of the module (host, port, ...)
-    # The request isn't actually made, @http_request is set
-    def initialize(method, request_uri, params = {})
-      method = method.downcase.to_s
+    # Prepares the basic @http object with the current values of the module (host, port, ...)
+    def initialize
+      @http = Net::HTTP.new(TheBigDB.api_host, TheBigDB.api_port)
 
-      @http = Net::HTTP.new(::TheBigDB.api_host, ::TheBigDB.api_port)
-
-      if ::TheBigDB.use_ssl
+      if TheBigDB.use_ssl
         @http.use_ssl = true
-        if ::TheBigDB.verify_ssl_certificates
+        if TheBigDB.verify_ssl_certificates
           raise NotImplementedError
         else
           @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
       end
+    end
 
-      # fill params with more infos about the wrapper
+    # Prepares the @http_request object with the actual content of the request
+    def prepare(method, request_uri, params = {})
+      method = method.downcase.to_s
 
       if method == "get"
         encoded_params = URI.encode_www_form(params)
@@ -29,14 +29,27 @@ module TheBigDB
       else
         raise ArgumentError, "The request method must be 'get' or 'post'"
       end
+
+      @http_request["user-agent"] = "TheBigDB RubyWrapper/#{TheBigDB::VERSION::STRING}"
+
+      client_user_agent = {
+        :publisher => 'thebigdb',
+        :version => TheBigDB::VERSION::STRING,
+        :language => 'ruby',
+        :language_version => "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})",
+      }
+
+      @http_request["X-TheBigDB-Client-User-Agent"] = JSON(client_user_agent)
+
+      @http_request
     end
 
-    # The request is executed and the @http_response is set
+    # Actually makes the request prepared in @http_request, and sets @http_response
     def execute
       @http_response = @http.request(@http_request)
     end
 
-    # This is the ruby Hash object response from the JSON answer
+    # Shortcut: returns Hash object from the HTTP response's JSON body
     def response
       # If the request hasn't been executed yet, we'll do it now
       unless defined?(@http_response)
@@ -47,9 +60,11 @@ module TheBigDB
       JSON(@http_response.body)
     end
 
-    # shortcut
+    # Shortcut: prepares, executes and returns Hash containing the server's response
     def self.get_response(*args)
-      request = new(*args)
+      request = new
+      request.prepare(*args)
+      request.execute
       request.response
     end
   end

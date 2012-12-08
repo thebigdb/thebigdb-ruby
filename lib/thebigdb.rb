@@ -5,6 +5,7 @@ require "json"
   module_attribute_accessors
   shortcut
   request
+  version
 ).each do |file_name|
   require File.join(File.dirname(__FILE__), 'thebigdb', file_name)
 end
