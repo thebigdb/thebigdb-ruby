@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rb-inotify"
   s.add_development_dependency "rb-fsevent"
   s.add_development_dependency "rb-fchange"
+  s.add_development_dependency "webmock", "~> 1.9"
 
 
   s.files = `git ls-files`.split("\n")

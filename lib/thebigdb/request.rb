@@ -20,6 +20,9 @@ module TheBigDB
     def prepare(method, request_uri, params = {})
       method = method.downcase.to_s
 
+      # we add the API version to the URL
+      request_uri = "/v#{TheBigDB.api_version}" + (request_uri.start_with?("/") ? request_uri : "/#{request_uri}")
+
       if method == "get"
         encoded_params = URI.encode_www_form(params)
         @http_request = Net::HTTP::Get.new(request_uri + "?" + encoded_params)
