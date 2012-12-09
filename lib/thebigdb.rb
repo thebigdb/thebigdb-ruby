@@ -1,5 +1,6 @@
 require "net/https"
 require "json"
+require "rack"
 
 %w(
   module_attribute_accessors

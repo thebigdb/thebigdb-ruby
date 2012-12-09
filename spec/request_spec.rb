@@ -44,7 +44,7 @@ end
 
 describe "executing requests" do
   before do
-    stub_request(:any, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+    stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
 
     @request = TheBigDB::Request.new
     @request.prepare(:get, "/", :foo => "bar")
@@ -64,15 +64,72 @@ describe "executing requests" do
   end
 end
 
+describe "executing GET requests" do
+  before do
+    stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+
+    @request = TheBigDB::Request.new
+    @request.prepare(:get, "/", :foo => "bar")
+    @request.execute
+  end
+
+  it "sets the correct data_sent instance variable" do
+    @request.data_sent.should == {
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/",
+        "method" => "GET",
+        "params" => {"foo" => "bar"}
+      }
+  end
+
+  it "sets the correct data_received instance variable" do
+    @request.data_received.should include({
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
+  end
+end
+
+
+describe "executing POST requests" do
+  before do
+    stub_request(:post, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+
+    @request = TheBigDB::Request.new
+    @request.prepare(:post, "/", :foo => "bar")
+    @request.execute
+  end
+
+  it "sets the correct data_sent instance variable" do
+    @request.data_sent.should == {
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/",
+        "method" => "POST",
+        "params" => {"foo" => "bar"}
+      }
+  end
+
+  it "sets the correct data_received instance variable" do
+    @request.data_received.should include({
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
+  end
+end
+
 describe "executing requests with before/after callbacks" do
   it "runs both of them" do
-    stub_request(:any, /#{TheBigDB.api_host}/).to_return(:body => "{}")
+    stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => "{}")
 
     String.should_receive(:new).with("called in before_execution")
     String.should_receive(:new).with("called in after_execution")
 
-    TheBigDB.before_request_execution = lambda { String.new("called in before_execution") }
-    TheBigDB.after_request_execution = lambda { String.new("called in after_execution") }
+    TheBigDB.before_request_execution = proc { String.new("called in before_execution") }
+    TheBigDB.after_request_execution = proc { String.new("called in after_execution") }
 
     TheBigDB.send_request(:get, "/")
   end

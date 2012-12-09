@@ -14,12 +14,15 @@ Gem::Specification.new do |s|
 
   s.platform = Gem::Platform::RUBY
 
+  s.add_runtime_dependency "rack", "~> 1.4"
+
   s.add_development_dependency "rspec", "~> 2.12"
   s.add_development_dependency "guard-rspec", "~> 2.3"
   s.add_development_dependency "rb-inotify"
   s.add_development_dependency "rb-fsevent"
   s.add_development_dependency "rb-fchange"
   s.add_development_dependency "webmock", "~> 1.9"
+
 
 
   s.files = `git ls-files`.split("\n")
