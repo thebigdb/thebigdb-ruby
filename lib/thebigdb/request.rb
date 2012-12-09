@@ -20,7 +20,7 @@ module TheBigDB
     def prepare(method, request_uri, params = {})
       method = method.downcase.to_s
 
-      # we add the API version to the URL
+      # we add the API version to the URL, with a trailing slash and the rest of the request
       request_uri = "/v#{TheBigDB.api_version}" + (request_uri.start_with?("/") ? request_uri : "/#{request_uri}")
 
       if method == "get"

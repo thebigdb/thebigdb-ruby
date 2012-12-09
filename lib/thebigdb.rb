@@ -7,6 +7,7 @@ require "rack"
   shortcut
   request
   version
+  resources/sentence
 ).each do |file_name|
   require File.join(File.dirname(__FILE__), 'thebigdb', file_name)
 end
