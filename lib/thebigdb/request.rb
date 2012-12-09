@@ -49,7 +49,11 @@ module TheBigDB
 
     # Actually makes the request prepared in @http_request, and sets @http_response
     def execute
+      TheBigDB.before_request_execution.call
+
       @http_response = @http.request(@http_request)
+
+      TheBigDB.after_request_execution.call
     end
 
     # Shortcut: returns Hash object from the HTTP response's JSON body
@@ -63,12 +67,5 @@ module TheBigDB
       JSON(@http_response.body)
     end
 
-    # Shortcut: prepares, executes and returns Hash containing the server's response
-    def self.get_response(*args)
-      request = new
-      request.prepare(*args)
-      request.execute
-      request.response
-    end
   end
 end

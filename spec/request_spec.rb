@@ -63,3 +63,17 @@ describe "executing requests" do
     @request.response.should == {"server_says" => "hello world"}
   end
 end
+
+describe "executing requests with before/after callbacks" do
+  it "runs both of them" do
+    stub_request(:any, /#{TheBigDB.api_host}/).to_return(:body => "{}")
+
+    String.should_receive(:new).with("called in before_execution")
+    String.should_receive(:new).with("called in after_execution")
+
+    TheBigDB.before_request_execution = lambda { String.new("called in before_execution") }
+    TheBigDB.after_request_execution = lambda { String.new("called in after_execution") }
+
+    TheBigDB.send_request(:get, "/")
+  end
+end
