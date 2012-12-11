@@ -4,7 +4,7 @@ require "rack"
 
 %w(
   module_attribute_accessors
-  shortcut
+  aliases
   request
   version
   resources/sentence
