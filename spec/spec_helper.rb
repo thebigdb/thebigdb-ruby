@@ -13,4 +13,7 @@ RSpec.configure do |config|
   config.after(:each) do
     TheBigDB.reset_default_values
   end
+
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
 end

@@ -92,6 +92,61 @@ describe "executing GET requests" do
   end
 end
 
+describe "executing GET requests with array arguments" do
+  before do
+    stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+
+    @request = TheBigDB::Request.new
+    @request.prepare(:get, "/", :nodes => ["foo", "bar"])
+    @request.execute
+  end
+
+  it "sets the correct data_sent instance variable" do
+    @request.data_sent.should == {
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/",
+        "method" => "GET",
+        "params" => {"nodes" => {"0" => "foo", "1" => "bar"}}
+      }
+  end
+
+  it "sets the correct data_received instance variable" do
+    @request.data_received.should include({
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
+  end
+end
+
+describe "executing GET requests with hash arguments" do
+  before do
+    stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+
+    @request = TheBigDB::Request.new
+    @request.prepare(:get, "/", :nodes => {"0" => "foo", "1" => "bar"})
+    @request.execute
+  end
+
+  it "sets the correct data_sent instance variable" do
+    @request.data_sent.should == {
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/",
+        "method" => "GET",
+        "params" => {"nodes" => {"0" => "foo", "1" => "bar"}}
+      }
+  end
+
+  it "sets the correct data_received instance variable" do
+    @request.data_received.should include({
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
+  end
+end
 
 describe "executing POST requests" do
   before do
@@ -121,6 +176,62 @@ describe "executing POST requests" do
   end
 end
 
+describe "executing POST requests with array arguments" do
+  before do
+    stub_request(:post, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+
+    @request = TheBigDB::Request.new
+    @request.prepare(:post, "/", :nodes => ["foo", "bar"])
+    @request.execute
+  end
+
+  it "sets the correct data_sent instance variable" do
+    @request.data_sent.should == {
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/",
+        "method" => "POST",
+        "params" => {"nodes" => {"0" => "foo", "1" => "bar"}}
+      }
+  end
+
+  it "sets the correct data_received instance variable" do
+    @request.data_received.should include({
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
+  end
+end
+
+describe "executing POST requests with hash arguments" do
+  before do
+    stub_request(:post, /#{TheBigDB.api_host}/).to_return(:body => '{"server_says": "hello world"}')
+
+    @request = TheBigDB::Request.new
+    @request.prepare(:post, "/", :nodes => {"0" => "foo", "1" => "bar"})
+    @request.execute
+  end
+
+  it "sets the correct data_sent instance variable" do
+    @request.data_sent.should == {
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/",
+        "method" => "POST",
+        "params" => {"nodes" => {"0" => "foo", "1" => "bar"}}
+      }
+  end
+
+  it "sets the correct data_received instance variable" do
+    @request.data_received.should include({
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
+  end
+end
+
 describe "executing requests with before/after callbacks" do
   it "runs both of them" do
     stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => "{}")
@@ -132,5 +243,61 @@ describe "executing requests with before/after callbacks" do
     TheBigDB.after_request_execution = proc { String.new("called in after_execution") }
 
     TheBigDB.send_request(:get, "/")
+  end
+end
+
+describe "Helper serialize_query_params" do
+  it "works with simple a=b&c=d params" do
+    TheBigDB::Request.serialize_query_params(a: "b", c: "d").should == "a=b&c=d"
+  end
+
+  it "works with more complex imbricated params" do
+    TheBigDB::Request.serialize_query_params({
+      house: "bricks",
+      animals: ["cat", "dog"],
+      computers: {cool: true, drives: ["hard", "flash"]}
+    }).should == "house=bricks&animals%5B0%5D=cat&animals%5B1%5D=dog&computers%5Bcool%5D=true&computers%5Bdrives%5D%5B0%5D=hard&computers%5Bdrives%5D%5B1%5D=flash"
+
+    # and with a hash instead of an array
+    TheBigDB::Request.serialize_query_params({
+      house: "bricks",
+      animals: {"0" => "cat", "1" => "dog"},
+      computers: {cool: true, drives: ["hard", "flash"]}
+    }).should == "house=bricks&animals%5B0%5D=cat&animals%5B1%5D=dog&computers%5Bcool%5D=true&computers%5Bdrives%5D%5B0%5D=hard&computers%5Bdrives%5D%5B1%5D=flash"
+  end
+
+  describe "Helper flatten_params_keys" do
+    it "works with simple a=b&c=d params" do
+      TheBigDB::Request.flatten_params_keys(a: "b", c: "d").should == {"a" => "b", "c" => "d"}
+    end
+
+    it "works with more complex imbricated params" do
+      TheBigDB::Request.flatten_params_keys({
+        house: "bricks",
+        animals: ["cat", "dog"],
+        computers: {cool: true, drives: ["hard", "flash"]}
+      }).should == {
+        "house" => "bricks",
+        "animals[0]" => "cat",
+        "animals[1]" => "dog",
+        "computers[cool]" => "true",
+        "computers[drives][0]" => "hard",
+        "computers[drives][1]" => "flash"
+      }
+
+      # and with a hash instead of an array
+      TheBigDB::Request.flatten_params_keys({
+        house: "bricks",
+        animals: {"0" => "cat", "1" => "dog"},
+        computers: {cool: true, drives: ["hard", "flash"]}
+      }).should == {
+        "house" => "bricks",
+        "animals[0]" => "cat",
+        "animals[1]" => "dog",
+        "computers[cool]" => "true",
+        "computers[drives][0]" => "hard",
+        "computers[drives][1]" => "flash"
+      }
+    end
   end
 end
