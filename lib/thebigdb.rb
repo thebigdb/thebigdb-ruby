@@ -8,6 +8,7 @@ require "rack"
   request
   version
   resources/sentence
+  resources/toolbox
 ).each do |file_name|
   require File.join(File.dirname(__FILE__), 'thebigdb', file_name)
 end
