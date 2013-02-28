@@ -5,7 +5,7 @@ describe "Toolbox Units" do
     before do
       stub_request(:get, /#{TheBigDB.api_host}\/v#{TheBigDB.api_version}\/toolbox\/units\/convert/).to_return(:body => '{"server_says": "hello world"}')
 
-      @request = TheBigDB::Resources::Toolbox::Units(:convert, :value => "100 ly", :new_unit => "cm")
+      @request = TheBigDB::Resources::Toolbox::Unit(:convert, :value => "100 ly", :new_unit => "cm")
     end
 
     it "sets the correct data_sent instance variable" do

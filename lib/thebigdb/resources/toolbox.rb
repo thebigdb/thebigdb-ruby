@@ -1,7 +1,7 @@
 module TheBigDB
   module Resources
     module Toolbox
-      def self.Units(action, params)
+      def self.Unit(action, params)
         method = "GET"
         path = "/toolbox/units/#{action}"
 
