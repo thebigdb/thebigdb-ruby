@@ -11,7 +11,7 @@ A simple ruby wrapper for making requests to the API of [TheBigDB.com][0].
 Make your requests using this structure:
     
 
-    TheBigDB::Resources::Sentence(action, parameters)
+    TheBigDB::Sentence(action, parameters)
 
 
 **[action]** => String of the action as described in the API (e.g. "search", "show", ...)  
@@ -20,7 +20,7 @@ Make your requests using this structure:
 
 Examples:
     
-    request = TheBigDB::Resources::Sentence(:search,
+    request = TheBigDB::Sentence(:search,
       {
         nodes: [{search: ""}, "job", "President of the United States"],
         period: {from: "2000-01-01 00:00:00", to: "2002-01-01 00:00:00"}
@@ -46,7 +46,7 @@ That's it!
 Every request you make will return a ``TheBigDB::Request`` object.
 It has several readable attributes:
     
-    request = TheBigDB::Resources::Sentence(:search, {nodes: ["iPhone", "weight"]})
+    request = TheBigDB::Sentence(:search, {nodes: ["iPhone", "weight"]})
     request.http              # Net::HTTP
     request.http_request      # subclass of Net::HTTPGenericRequest (Net::HTTP::Get or Net::HTTP::Post)
     request.http_response     # subclass of Net::HTTPResponse (e.g. Net::HTTPOK)
@@ -58,12 +58,12 @@ It has several readable attributes:
 
 You can access other parts of the API in the same way as sentences:
     
-    TheBigDB::Resources::User(action, parameters)
-    TheBigDB::Resources::Toolbox::Unit(action, parameters)
+    TheBigDB::User(action, parameters)
+    TheBigDB::Toolbox::Unit(action, parameters)
 
     # Examples
-    TheBigDB::Resources::User(:show, {login: "christophe"}).response["user"]["karma"]
-    TheBigDB::Resources::Toolbox::Unit(:compare, {values: ["100 g", "1.2 kg"]}).response["result"]
+    TheBigDB::User(:show, {login: "christophe"}).response["user"]["karma"]
+    TheBigDB::Toolbox::Unit(:compare, {values: ["100 g", "1.2 kg"]}).response["result"]
 
 You can modify the TheBigDB module with several configuration options:
 

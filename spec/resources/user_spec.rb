@@ -5,7 +5,7 @@ describe "User" do
     before do
       stub_request(:get, /#{TheBigDB.api_host}\/v#{TheBigDB.api_version}\/users\/show/).to_return(:body => '{"server_says": "hello world"}')
 
-      @request = TheBigDB::Resources::User(:show, login: "christophe")
+      @request = TheBigDB::User(:show, login: "christophe")
     end
 
     it "sets the correct data_sent instance variable" do
