@@ -68,7 +68,7 @@ module TheBigDB
         # We parse the JSON answer and return it.
         @response = JSON(@http_response.body)
       rescue JSON::ParserError => e
-        @response = {"error" => {"code" => 0, "message" => "The server gave an invalid JSON body:\n#{@http_response.body}"}}
+        @response = {"error" => {"code" => "0000", "description" => "The server gave an invalid JSON body:\n#{@http_response.body}"}}
       end
 
       # Setting @data_sent and @data_received
