@@ -7,7 +7,7 @@ require "rack"
   aliases
   request
   version
-  resources/sentence
+  resources/statement
   resources/user
   resources/toolbox
 ).each do |file_name|

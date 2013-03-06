@@ -1,11 +1,11 @@
 require "spec_helper"
 
-describe "Sentence" do
+describe "Statement" do
   context "basic request executing" do
     before do
-      stub_request(:get, /#{TheBigDB.api_host}\/v#{TheBigDB.api_version}\/sentences\/search/).to_return(:body => '{"server_says": "hello world"}')
+      stub_request(:get, /#{TheBigDB.api_host}\/v#{TheBigDB.api_version}\/statements\/search/).to_return(:body => '{"server_says": "hello world"}')
 
-      @request = TheBigDB::Sentence(:search, nodes: ["a", "b"])
+      @request = TheBigDB::Statement(:search, nodes: ["a", "b"])
     end
 
     it "sets the correct data_sent instance variable" do
@@ -13,7 +13,7 @@ describe "Sentence" do
           "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
           "host" => TheBigDB.api_host,
           "port" => TheBigDB.api_port,
-          "path" => "/v#{TheBigDB.api_version}/sentences/search",
+          "path" => "/v#{TheBigDB.api_version}/statements/search",
           "method" => "GET",
           "params" => {"nodes" => {"0" => "a", "1" => "b"}}
         }
