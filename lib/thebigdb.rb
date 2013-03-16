@@ -63,6 +63,13 @@ module TheBigDB
     @@after_request_execution = object
   end
 
+  def self.with_configuration(new_configuration, &block)
+    current_configuration = Hash[DEFAULT_CONFIGURATION.keys.map{|k| [k, send(k)] }]
+    new_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
+    yield
+    current_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
+  end
+
 
   # Shortcut: prepares, executes and returns Hash containing the server's response
   def self.send_request(*args)

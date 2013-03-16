@@ -20,4 +20,12 @@ describe "TheBigDB module" do
     TheBigDB.reset_default_configuration
     TheBigDB.api_host.should == default_host
   end
+
+  it "can set a configuration scope" do
+    TheBigDB.api_host = "thebigdb_host_1"
+    TheBigDB.with_configuration(api_host: "thebigdb_host_2") do
+      TheBigDB.api_host.should == "thebigdb_host_2"
+    end
+    TheBigDB.api_host.should == "thebigdb_host_1"
+  end
 end
