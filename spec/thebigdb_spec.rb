@@ -17,7 +17,7 @@ describe "TheBigDB module" do
   it "has resettable default values" do
     default_host = TheBigDB.api_host.dup
     TheBigDB.api_host = "foobar"
-    TheBigDB.reset_default_values
+    TheBigDB.reset_default_configuration
     TheBigDB.api_host.should == default_host
   end
 end

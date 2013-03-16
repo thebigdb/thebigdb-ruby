@@ -16,7 +16,7 @@ end
 
 module TheBigDB
 
-  DEFAULT_VALUES = {
+  DEFAULT_CONFIGURATION = {
     "api_host" => "api.thebigdb.com",
     "api_port" => 80,
     "api_version" => "1",
@@ -26,16 +26,16 @@ module TheBigDB
     "after_request_execution" => Proc.new{}
   }
 
-  mattr_accessor :api_host, :api_port, :api_version, :api_key
-  mattr_accessor :use_ssl, :verify_ssl_certificates
-  mattr_accessor :before_request_execution, :after_request_execution
+  DEFAULT_CONFIGURATION.each_key do |configuration_key|
+    mattr_accessor configuration_key
+  end
 
-  def self.reset_default_values
-    DEFAULT_VALUES.each_pair do |key, value|
+  def self.reset_default_configuration
+    DEFAULT_CONFIGURATION.each_pair do |key, value|
       send(key + "=", value)
     end
   end
-  reset_default_values
+  reset_default_configuration
 
   def self.use_ssl=(bool)
     @@api_port = bool ? 443 : 80

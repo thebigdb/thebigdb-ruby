@@ -6,12 +6,12 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before(:each) do
-    TheBigDB::DEFAULT_VALUES["api_host"] = "fake.test.host"
-    TheBigDB.reset_default_values
+    TheBigDB::DEFAULT_CONFIGURATION["api_host"] = "fake.test.host"
+    TheBigDB.reset_default_configuration
   end
 
   config.after(:each) do
-    TheBigDB.reset_default_values
+    TheBigDB.reset_default_configuration
   end
 
   config.filter_run focus: true
