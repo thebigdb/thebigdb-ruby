@@ -69,8 +69,6 @@ module TheBigDB
     new_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
     begin
       yield
-    rescue => e
-      raise e
     ensure
       current_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
     end
