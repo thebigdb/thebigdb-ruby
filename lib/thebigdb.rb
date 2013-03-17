@@ -66,8 +66,13 @@ module TheBigDB
   def self.with_configuration(new_configuration, &block)
     current_configuration = Hash[DEFAULT_CONFIGURATION.keys.map{|k| [k, send(k)] }]
     new_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
-    yield
-    current_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
+    begin
+      yield
+    rescue => e
+      raise e
+    ensure
+      current_configuration.each_pair{|k,v| send(k.to_s + "=", v) }
+    end
   end
 
 
