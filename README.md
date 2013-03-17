@@ -74,6 +74,11 @@ You can modify the TheBigDB module with several configuration options:
     TheBigDB.before_request_execution = ->(request){ logger.info(request.data_sent) }     # default: Proc.new{}
     TheBigDB.after_request_execution = ->(request){ logger.info(request.data_received) }  # default: Proc.new{}
 
+    # You can also modify the configuration temporarily
+    TheBigDB.with_configuration(use_ssl: true) do
+      # your code here
+    end
+
 
 ## Contributing
 
