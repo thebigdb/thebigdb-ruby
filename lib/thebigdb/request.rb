@@ -1,5 +1,7 @@
 module TheBigDB
   class Request
+    class ApiStatusError < StandardError; end
+
     attr_reader :http, :http_request, :http_response, :data_sent, :data_received, :response
 
     # Prepares the basic @http object with the current values of the module (host, port, ...)
@@ -100,6 +102,11 @@ module TheBigDB
 
       # Executing callback
       TheBigDB.after_request_execution.call(self)
+
+      # Raising exception if asked
+      if TheBigDB.raise_on_api_status_error and @response["status"] == "error"
+        raise ApiStatusError.new(@response["error"]["code"])
+      end
 
       self
     end

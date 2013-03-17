@@ -82,6 +82,15 @@ describe "executing" do
     end
   end
 
+  context "failing requests" do
+    it "can raise an exception" do
+      stub_request(:get, /#{TheBigDB.api_host}/).to_return(:body => "invalid json")
+
+      TheBigDB.raise_on_api_status_error = true
+      lambda { TheBigDB.send_request(:get, "/") }.should raise_error(TheBigDB::Request::ApiStatusError, "0000")
+    end
+  end
+
   context "GET requests" do
     context "with basic params" do
       before do

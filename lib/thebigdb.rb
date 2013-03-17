@@ -23,7 +23,8 @@ module TheBigDB
     "use_ssl" => false,
     "verify_ssl_certificates" => false,
     "before_request_execution" => Proc.new{},
-    "after_request_execution" => Proc.new{}
+    "after_request_execution" => Proc.new{},
+    "raise_on_api_status_error" => false
   }
 
   DEFAULT_CONFIGURATION.each_key do |configuration_key|

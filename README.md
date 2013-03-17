@@ -70,6 +70,9 @@ You can modify the TheBigDB module with several configuration options:
     TheBigDB.api_key = "your-private-api-key"           # default: nil
     TheBigDB.use_ssl = true                             # default: false
 
+    # If true, and a request response has {"status" => "error"}, it will raise a TheBigDB::Request::ApiStatusError exception with the API error code
+    TheBigDB.raise_on_api_status_error = true           # default: false
+
     # Both of them take a Proc or a Lambda, the TheBigDB::Request instance is passed as argument
     TheBigDB.before_request_execution = ->(request){ logger.info(request.data_sent) }     # default: Proc.new{}
     TheBigDB.after_request_execution = ->(request){ logger.info(request.data_received) }  # default: Proc.new{}
