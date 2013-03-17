@@ -71,8 +71,8 @@ You can modify the TheBigDB module with several configuration options:
     TheBigDB.use_ssl = true                             # default: false
 
     # Both of them take a Proc or a Lambda, the TheBigDB::Request instance is passed as argument
-    TheBigDB.before_request_execution = ->(request){ Logger.foo(request) }   # default: Proc.new{}
-    TheBigDB.after_request_execution = ->(request){ Logger.foo(request) }    # default: Proc.new{}
+    TheBigDB.before_request_execution = ->(request){ logger.info(request.data_sent) }     # default: Proc.new{}
+    TheBigDB.after_request_execution = ->(request){ logger.info(request.data_received) }  # default: Proc.new{}
 
 
 ## Contributing

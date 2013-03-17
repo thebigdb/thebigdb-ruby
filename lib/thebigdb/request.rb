@@ -50,28 +50,14 @@ module TheBigDB
     # Actually makes the request prepared in @http_request, and sets @http_response
     def execute
       # Here is the order of operations:
+      # -> setting @data_sent
       # -> executing before_request_execution callback
       # -> executing the HTTP request
       # -> setting @response
-      # -> setting @data_sent
       # -> setting @data_received
       # -> executing after_request_execution callback
 
-      # Executing callback
-      TheBigDB.before_request_execution.call(self)
-
-      # Here is where the request is actually executed
-      @http_response = @http.request(@http_request)
-
-      # Setting @response
-      begin
-        # We parse the JSON answer and return it.
-        @response = JSON(@http_response.body)
-      rescue JSON::ParserError => e
-        @response = {"error" => {"code" => "0000", "description" => "The server gave an invalid JSON body:\n#{@http_response.body}"}}
-      end
-
-      # Setting @data_sent and @data_received
+      # Setting @data_sent
       params = Rack::Utils.parse_nested_query(URI.parse(@http_request.path).query)
       # Since that's how it will be interpreted anyway on the server, we merge the POST params to the GET params,
       # but it's not supposed to happen: either every params is prepared for GET/query params, or as POST body
@@ -92,11 +78,27 @@ module TheBigDB
         "params" => params
       }
 
+      # Executing callback
+      TheBigDB.before_request_execution.call(self)
+
+      # Here is where the request is actually executed
+      @http_response = @http.request(@http_request)
+
+      # Setting @response
+      begin
+        # We parse the JSON answer and return it.
+        @response = JSON(@http_response.body)
+      rescue JSON::ParserError => e
+        @response = {"error" => {"code" => "0000", "description" => "The server gave an invalid JSON body:\n#{@http_response.body}"}}
+      end
+
+      # Setting @data_received
       @data_received = {
         "headers" => Hash[@http_response.to_hash.map{|k,v| [k, v.join] }],
         "content" => @response
       }
 
+      # Executing callback
       TheBigDB.after_request_execution.call(self)
 
       self
