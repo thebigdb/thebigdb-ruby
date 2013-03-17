@@ -4,7 +4,6 @@ require "thebigdb/version"
 Gem::Specification.new do |s|
   s.name = "thebigdb"
   s.version = TheBigDB::VERSION::STRING
-  s.date = "2013-03-12"
   s.summary = "Ruby bindings for TheBigDB API"
   s.description = "TheBigDB a simply structured open database of real life facts. See http://thebigdb.com for details."
   s.authors = ["Christophe Maximin"]
