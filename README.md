@@ -1,5 +1,7 @@
 # TheBigDB Ruby Wrapper
 
+[![Build Status](https://secure.travis-ci.org/thebigdb/thebigdb-ruby.png)](http://travis-ci.org/thebigdb/thebigdb-ruby)
+
 A simple ruby wrapper for making requests to the API of [TheBigDB.com][0].
 
 ## Install
