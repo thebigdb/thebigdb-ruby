@@ -29,6 +29,7 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
     rack (1.5.2)
+    rake (10.0.3)
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.9.3)
@@ -54,6 +55,7 @@ PLATFORMS
 
 DEPENDENCIES
   guard-rspec (~> 2.3)
+  rake (~> 10.0.3)
   rb-fchange
   rb-fsevent
   rb-inotify
