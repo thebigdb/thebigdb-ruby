@@ -61,11 +61,9 @@ It has several readable attributes:
 You can access other parts of the API in the same way as statements:
     
     TheBigDB::User(action, parameters)
-    TheBigDB::Toolbox::Unit(action, parameters)
 
     # Examples
     TheBigDB::User(:show, {login: "christophe"}).response["user"]["karma"]
-    TheBigDB::Toolbox::Unit(:compare, {values: ["100 g", "1.2 kg"]}).response["result"]
 
 You can modify the TheBigDB module with several configuration options:
 
