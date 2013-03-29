@@ -8,6 +8,8 @@ RSpec.configure do |config|
   config.before(:each) do
     TheBigDB::DEFAULT_CONFIGURATION["api_host"] = "fake.test.host"
     TheBigDB.reset_default_configuration
+
+    @request_path = ->(action){ /#{TheBigDB.api_host}\/v#{TheBigDB.api_version}\/statements\/#{action}/ }
   end
 
   config.after(:each) do

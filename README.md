@@ -8,44 +8,33 @@ A simple ruby wrapper for making requests to the API of [TheBigDB.com][0].
 
     gem install thebigdb
 
-## Usage
+## Simple usage
 
-Make your requests using this structure:
-    
+The following actions return a TheBigDB::StatementRequest object, on which you can add params using ``.with(hash_of_params)``.
+The request will be executed once you call regular methods of Hash on it (``each_pair``, ``[key]``, etc.), or force it with ``execute``.
+The Hash returned represents the server's JSON response.
 
-    TheBigDB::Statement(action, parameters)
+### Search
 
+    TheBigDB.search("iPhone").with(page: 2)
+    TheBigDB.search({search: "James"}, "job", "President of the United States")
 
-**[action]** => String of the action as described in the API (e.g. "search", "show", ...)  
-**[parameters]** => Hash. Request parameters as described in the API. Tip: Arrays like ``["abc", "def"]`` will automatically be converted to ``{"0" => "abc", "1" => "def"}``
+### Create
 
+    TheBigDB.create("iPhone 5", "weight", "112 grams")
+    TheBigDB.create("Bill Clinton", "job", "President of the United States").with(period: {from: "1993-01-20 12:00:00", to: "2001-01-20 11:59:59"})
 
-Examples:
-    
-    request = TheBigDB::Statement(:search,
-      {
-        nodes: [{search: ""}, "job", "President of the United States"],
-        period: {from: "2000-01-01 00:00:00", to: "2002-01-01 00:00:00"}
-      }
-    )
+### Show, Upvote and Downvote
 
-    puts request.response
-
-Will print something like:
-
-    {
-      "status" => "success",
-      "statements" => [
-        {"nodes" => ["Bill Clinton", "job", "President of the United States"], "id" => "8e6aec890c942b6f7854d2d7a9f0d002f5ddd0c0", "period"=>{"from" => "1993-01-20 00:00:00", "to" => "2001-01-20 00:00:00"}},
-        {"nodes" => ["George W. Bush", "job", "President of the United States"], "id" => "3f27673816455054032bd46e65bbe4db8ccf9076", "period"=>{"from" => "2001-01-20 00:00:00", "to" => "2009-01-20 00:00:00"}}
-      ]
-    }
+    TheBigDB.show("id-of-the-sentence")
+    TheBigDB.upvote("id-of-the-sentence")
+    TheBigDB.downvote("id-of-the-sentence")
 
 That's it!
 
-## The TheBigDB::Request object
+## TheBigDB::Request object
 
-Every request you make will return a ``TheBigDB::Request`` object.
+If you want more details on what is sent and what is received, you can use the generic TheBigDB::Statement method. It returns a TheBigDB::Request object.
 It has several readable attributes:
     
     request = TheBigDB::Statement(:search, {nodes: ["iPhone", "weight"]})

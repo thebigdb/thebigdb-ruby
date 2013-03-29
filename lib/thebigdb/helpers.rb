@@ -37,5 +37,13 @@ module TheBigDB
       new_params
     end
 
+    # Inspired by on ActiveSupport's stringify_keys
+    def self.stringify_keys(hash)
+      hash.inject({}) do |options, (key, value)|
+        options[key.to_s] = value
+        options
+      end
+    end
+
   end
 end

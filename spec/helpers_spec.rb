@@ -56,5 +56,17 @@ describe "Helpers" do
       }
     end
   end
-end
 
+  describe "stringify_keys" do
+    it "works with simple mixed hash" do
+      TheBigDB::Helpers::stringify_keys({
+        :a => "foo",
+        "b" => "bar",
+        "a" => "foo2"
+      }).should == {
+        "a" => "foo2",
+        "b" => "bar"
+      }
+    end
+  end
+end
