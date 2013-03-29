@@ -10,20 +10,20 @@ describe "Statement" do
 
     it "sets the correct data_sent instance variable" do
       @request.data_sent.should == {
-          "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
-          "host" => TheBigDB.api_host,
-          "port" => TheBigDB.api_port,
-          "path" => "/v#{TheBigDB.api_version}/statements/search",
-          "method" => "GET",
-          "params" => {"nodes" => {"0" => "a", "1" => "b"}}
-        }
+        "headers" => Hash[@request.http_request.to_hash.map{|k,v| [k, v.join] }],
+        "host" => TheBigDB.api_host,
+        "port" => TheBigDB.api_port,
+        "path" => "/v#{TheBigDB.api_version}/statements/search",
+        "method" => "GET",
+        "params" => {"nodes" => {"0" => "a", "1" => "b"}}
+      }
     end
 
     it "sets the correct data_received instance variable" do
       @request.data_received.should include({
-          "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
-          "content" => {"server_says" => "hello world"}
-        })
+        "headers" => Hash[@request.http_response.to_hash.map{|k,v| [k, v.join] }],
+        "content" => {"server_says" => "hello world"}
+      })
     end
   end
 end
