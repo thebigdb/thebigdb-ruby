@@ -7,6 +7,7 @@ require "rack"
   aliases
   request
   version
+  helpers
   resources/statement
   resources/user
 ).each do |file_name|
