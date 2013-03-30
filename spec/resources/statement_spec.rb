@@ -3,7 +3,7 @@ require "spec_helper"
 describe "Statement" do
   context "basic request executing" do
     before do
-      stub_request(:get, /#{TheBigDB.api_host}\/v#{TheBigDB.api_version}\/statements\/search/).to_return(:body => '{"server_says": "hello world"}')
+      stub_request(:get, @request_path.call("search")).to_return(:body => '{"server_says": "hello world"}')
 
       @request = TheBigDB::Statement(:search, nodes: ["a", "b"])
     end
@@ -33,27 +33,27 @@ describe "StatementRequest" do
   end
 
   it "makes normal requests" do
-    @search = TheBigDB.search("a", "b", {search: "blue"})
+    @search = TheBigDB.search("a", "b", {match: "blue"})
     @search.with(page: 2)
-    @search.params.should == {"nodes" => ["a", "b", {search: "blue"}], "page" => 2}
+    @search.params.should == {"nodes" => ["a", "b", {match: "blue"}], "page" => 2}
   end
 
   it "cache the response unless the params are modified, or asked to" do
     stub_request(:get, @request_path.call("search")).to_return(:body => '{status: "success", statements: []}')
 
-    response = TheBigDB.search("a", "b", {search: "blue"}).with(page: 2)
+    response = TheBigDB.search("a", "b", {match: "blue"}).with(page: 2)
     response.execute
     response.execute
 
-    response = TheBigDB.search("a", "b", {search: "red"}).with(page: 2)
+    response = TheBigDB.search("a", "b", {match: "red"}).with(page: 2)
     response.execute
     response.execute!
 
     a_request(:get, @request_path.call("search"))
-      .with(query: hash_including({"nodes" => ["a", "b", {search: "blue"}], "page" => "2"})).should have_been_made.once
+      .with(query: hash_including({"nodes" => ["a", "b", {match: "blue"}], "page" => "2"})).should have_been_made.once
 
     a_request(:get, @request_path.call("search"))
-      .with(query: hash_including({"nodes" => ["a", "b", {search: "red"}], "page" => "2"})).should have_been_made.times(2)
+      .with(query: hash_including({"nodes" => ["a", "b", {match: "red"}], "page" => "2"})).should have_been_made.times(2)
   end
 
   it "has standard actions correctly binded" do
@@ -63,7 +63,7 @@ describe "StatementRequest" do
     stub_request(:post, @request_path.call("upvote")).to_return(:body => '{status: "success"}')
     stub_request(:post, @request_path.call("downvote")).to_return(:body => '{status: "success"}')
 
-    TheBigDB.search("a", "b", {search: "blue"}).execute
+    TheBigDB.search("a", "b", {match: "blue"}).execute
     TheBigDB.show("foobar").execute
     TheBigDB.create("foobar").execute
     TheBigDB.upvote("foobar").execute

@@ -17,7 +17,8 @@ The Hash returned represents the server's JSON response.
 ### Search
 
     TheBigDB.search("iPhone").with(page: 2)
-    TheBigDB.search({search: "James"}, "job", "President of the United States")
+    TheBigDB.search({match: "James"}, "job", "President of the United States")
+    TheBigDB.search({match: "Facebook"}, "job", {match: "Executive"})
 
 ### Create
 
