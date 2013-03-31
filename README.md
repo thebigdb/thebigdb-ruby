@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/thebigdb/thebigdb-ruby.png)](http://travis-ci.org/thebigdb/thebigdb-ruby)
 
-A simple ruby wrapper for making requests to the API of [TheBigDB.com][0].
+A simple ruby wrapper for making requests to the API of [TheBigDB.com](http://thebigdb.com). [Full API documentation](http://developers.thebigdb.com/api).
 
 ## Install
 
@@ -14,18 +14,18 @@ The following actions return a TheBigDB::StatementRequest object, on which you c
 The request will be executed once you call regular methods of Hash on it (``each_pair``, ``[key]``, etc.), or force it with ``execute``.
 The Hash returned represents the server's JSON response.
 
-### Search
+### Search \([api doc](http://developers.thebigdb.com/api#statements-search)\)
 
     TheBigDB.search("iPhone").with(page: 2)
     TheBigDB.search({match: "James"}, "job", "President of the United States")
     TheBigDB.search({match: "Facebook"}, "job", {match: "Executive"})
 
-### Create
+### Create \([api doc](http://developers.thebigdb.com/api#statements-create)\)
 
     TheBigDB.create("iPhone 5", "weight", "112 grams")
     TheBigDB.create("Bill Clinton", "job", "President of the United States").with(period: {from: "1993-01-20 12:00:00", to: "2001-01-20 11:59:59"})
 
-### Show, Upvote and Downvote
+### Show \([api doc](http://developers.thebigdb.com/api#statements-show)\), Upvote \([api doc](http://developers.thebigdb.com/api#statements-upvote)\) and Downvote \([api doc](http://developers.thebigdb.com/api#statements-downvote)\)
 
     TheBigDB.show("id-of-the-sentence")
     TheBigDB.upvote("id-of-the-sentence")
@@ -84,6 +84,3 @@ Don't hesitate to send a pull request !
 ## License
 
 This software is distributed under the MIT License. Copyright (c) 2013, Christophe Maximin <christophe@thebigdb.com>
-
-
-[0]: http://thebigdb.com
