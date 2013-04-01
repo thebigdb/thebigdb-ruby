@@ -17,6 +17,7 @@ end
 module TheBigDB
 
   DEFAULT_CONFIGURATION = {
+    "api_key" => nil,
     "api_host" => "api.thebigdb.com",
     "api_port" => 80,
     "api_version" => "1",

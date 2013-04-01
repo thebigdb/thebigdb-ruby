@@ -22,6 +22,10 @@ module TheBigDB
     def prepare(method, request_uri, params = {})
       method = method.downcase.to_s
 
+      if TheBigDB.api_key.is_a?(String) and !TheBigDB.api_key.empty?
+        params.merge!("api_key" => TheBigDB.api_key)
+      end
+
       # we add the API version to the URL, with a trailing slash and the rest of the request
       request_uri = "/v#{TheBigDB.api_version}" + (request_uri.start_with?("/") ? request_uri : "/#{request_uri}")
 
@@ -38,10 +42,10 @@ module TheBigDB
       @http_request["user-agent"] = "TheBigDB RubyWrapper/#{TheBigDB::VERSION::STRING}"
 
       client_user_agent = {
-        :publisher => "thebigdb",
-        :version => TheBigDB::VERSION::STRING,
-        :language => "ruby",
-        :language_version => "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})",
+        "publisher" => "thebigdb",
+        "version" => TheBigDB::VERSION::STRING,
+        "language" => "ruby",
+        "language_version" => "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})",
       }
 
       @http_request["X-TheBigDB-Client-User-Agent"] = JSON(client_user_agent)

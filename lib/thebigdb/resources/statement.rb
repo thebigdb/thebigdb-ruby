@@ -43,22 +43,22 @@ module TheBigDB
 
   # Shortcuts to actions
   def self.search(*nodes)
-    StatementRequest.new("search").with(nodes: nodes)
+    StatementRequest.new("search").with("nodes" => nodes)
   end
 
   def self.create(*nodes)
-    StatementRequest.new("create").with(nodes: nodes)
+    StatementRequest.new("create").with("nodes" => nodes)
   end
 
   def self.show(id = "")
-    StatementRequest.new("show").with(id: id)
+    StatementRequest.new("show").with("id" => id)
   end
 
   def self.upvote(id = "")
-    StatementRequest.new("upvote").with(id: id)
+    StatementRequest.new("upvote").with("id" => id)
   end
 
   def self.downvote(id = "")
-    StatementRequest.new("downvote").with(id: id)
+    StatementRequest.new("downvote").with("id" => id)
   end
 end
