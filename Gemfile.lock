@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    thebigdb (1.2.0)
+    thebigdb (1.2.1)
       rack (~> 1.4)
 
 GEM
