@@ -5,7 +5,7 @@ describe "Statement" do
     before do
       stub_request(:get, @request_path.call("search")).to_return(:body => '{"server_says": "hello world"}')
 
-      @request = TheBigDB::Statement(:search, nodes: ["a", "b"])
+      @request = TheBigDB::Statement(:search, nodes: ["a a", "b"])
     end
 
     it "sets the correct data_sent instance variable" do
@@ -15,7 +15,7 @@ describe "Statement" do
         "port" => TheBigDB.api_port,
         "path" => "/v#{TheBigDB.api_version}/statements/search",
         "method" => "GET",
-        "params" => {"nodes" => {"0" => "a", "1" => "b"}}
+        "params" => {"nodes" => {"0" => "a a", "1" => "b"}}
       }
     end
 
@@ -33,9 +33,9 @@ describe "StatementRequest" do
   end
 
   it "makes normal requests" do
-    @search = TheBigDB.search("a", "b", {match: "blue"})
+    @search = TheBigDB.search("a a", "b", {match: "blue"})
     @search.with(page: 2)
-    @search.params.should == {"nodes" => ["a", "b", {match: "blue"}], "page" => 2}
+    @search.params.should == {"nodes" => ["a a", "b", {match: "blue"}], "page" => 2}
   end
 
   it "cache the response unless the params are modified, or asked to" do
