@@ -30,14 +30,20 @@ module TheBigDB
       @response.send(method_name, *arguments, &block)
     end
 
-    def execute
+    def load
       to_hash # goes through method_missing
     end
-    alias_method :response, :execute
+    alias_method :response, :load
+    alias_method :execute, :load
 
-    def execute! # forces the request to be re-executed
+    def load! # forces the request to be re-loadd
       @response = nil
       to_hash
+    end
+    alias_method :execute!, :load!
+
+    def inspect
+      load.inspect
     end
   end
 

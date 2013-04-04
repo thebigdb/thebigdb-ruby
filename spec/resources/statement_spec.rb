@@ -42,12 +42,12 @@ describe "StatementRequest" do
     stub_request(:get, @request_path.call("search")).to_return(:body => '{status: "success", statements: []}')
 
     response = TheBigDB.search("a", "b", {match: "blue"}).with(page: 2)
-    response.execute
-    response.execute
+    response.load
+    response.load
 
     response = TheBigDB.search("a", "b", {match: "red"}).with(page: 2)
-    response.execute
-    response.execute!
+    response.load
+    response.load!
 
     a_request(:get, @request_path.call("search"))
       .with(query: hash_including({"nodes" => ["a", "b", {match: "blue"}], "page" => "2"})).should have_been_made.once
@@ -63,11 +63,11 @@ describe "StatementRequest" do
     stub_request(:post, @request_path.call("upvote")).to_return(:body => '{status: "success"}')
     stub_request(:post, @request_path.call("downvote")).to_return(:body => '{status: "success"}')
 
-    TheBigDB.search("a", "b", {match: "blue"}).execute
-    TheBigDB.show("foobar").execute
-    TheBigDB.create("foobar").execute
-    TheBigDB.upvote("foobar").execute
-    TheBigDB.downvote("foobar").execute
+    TheBigDB.search("a", "b", {match: "blue"}).load
+    TheBigDB.show("foobar").load
+    TheBigDB.create("foobar").load
+    TheBigDB.upvote("foobar").load
+    TheBigDB.downvote("foobar").load
 
     a_request(:get, @request_path.call("search")).should have_been_made.once
     a_request(:get, @request_path.call("show")).should have_been_made.once

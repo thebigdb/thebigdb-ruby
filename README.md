@@ -11,7 +11,7 @@ A simple ruby wrapper for making requests to the API of [TheBigDB.com](http://th
 ## Simple usage
 
 The following actions return a TheBigDB::StatementRequest object, on which you can add params using ``.with(hash_of_params)``.
-The request will be executed once you call regular methods of Hash on it (``each_pair``, ``[key]``, etc.), or force it with ``execute``.
+The request will be executed once you call regular methods of Hash on it (``each_pair``, ``[key]``, etc.), or force it with ``load``.
 The Hash returned represents the server's JSON response.
 
 ### Search \([api doc](http://developers.thebigdb.com/api#statements-search)\)
