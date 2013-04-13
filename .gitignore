@@ -16,5 +16,7 @@ log/*
 *~
 *.swp
 .rvmrc
+.versions.conf
+.ruby-version
 *.gem
 tmp/*
