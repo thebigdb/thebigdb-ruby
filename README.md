@@ -23,7 +23,7 @@ The Hash returned represents the server's JSON response.
 ### Create \([api doc](http://developers.thebigdb.com/api#statements-create)\)
 
     TheBigDB.create("iPhone 5", "weight", "112 grams")
-    TheBigDB.create("Bill Clinton", "job", "President of the United States").with(period: {from: "1993-01-20 12:00:00", to: "2001-01-20 11:59:59"})
+    TheBigDB.create("Bill Clinton", "job", "President of the United States").with(period: {from: "1993-01-20 12:00:00", to: "2001-01-20 12:00:00"})
 
 ### Show \([api doc](http://developers.thebigdb.com/api#statements-show)\), Upvote \([api doc](http://developers.thebigdb.com/api#statements-upvote)\) and Downvote \([api doc](http://developers.thebigdb.com/api#statements-downvote)\)
 
