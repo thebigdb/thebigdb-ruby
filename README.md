@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/thebigdb/thebigdb-ruby.png)](http://travis-ci.org/thebigdb/thebigdb-ruby)
 
-A simple ruby wrapper for making requests to the API of [TheBigDB.com](http://thebigdb.com). [Full API documentation](http://developers.thebigdb.com/api).
+A simple ruby wrapper for making requests to the API of [TheBigDB.com](http://thebigdb.com). [Full API documentation](http://thebigdb.com/api).
 
 ## Install
 
@@ -14,18 +14,18 @@ The following actions return a TheBigDB::StatementRequest object, on which you c
 The request will be executed once you call regular methods of Hash on it (``each_pair``, ``[key]``, etc.), or force it with ``load``.
 The Hash returned represents the server's JSON response.
 
-### Search \([api doc](http://developers.thebigdb.com/api#statements-search)\)
+### Search \([api doc](http://thebigdb.com/api#statements-search)\)
 
-    TheBigDB.search("iPhone").with(page: 2)
-    TheBigDB.search({match: "James"}, "job", "President of the United States")
-    TheBigDB.search({match: "Facebook"}, "job", {match: "Executive"})
+    TheBigDB.search(subject: {match: "James"}, property: "job", answer: "President of the United States")
+    TheBigDB.search(subject: "London", property: "population").with(period: {on: "2007-06-05"})
+    TheBigDB.search("iPhone") # will fulltext search "iPhone" in all fields
 
-### Create \([api doc](http://developers.thebigdb.com/api#statements-create)\)
+### Create \([api doc](http://thebigdb.com/api#statements-create)\)
 
-    TheBigDB.create("iPhone 5", "weight", "112 grams")
-    TheBigDB.create("Bill Clinton", "job", "President of the United States").with(period: {from: "1993-01-20 12:00:00", to: "2001-01-20 12:00:00"})
+    TheBigDB.create(subject: "iPhone 5", property: "weight", answer: "112 grams")
+    TheBigDB.create(subject: "Bill Clinton", property: "job", answer: "President of the United States").with(period: {from: "1993-01-20 12:00:00", to: "2001-01-20 12:00:00"})
 
-### Show \([api doc](http://developers.thebigdb.com/api#statements-show)\), Upvote \([api doc](http://developers.thebigdb.com/api#statements-upvote)\) and Downvote \([api doc](http://developers.thebigdb.com/api#statements-downvote)\)
+### Show \([api doc](http://thebigdb.com/api#statements-show)\), Upvote \([api doc](http://thebigdb.com/api#statements-upvote)\) and Downvote \([api doc](http://thebigdb.com/api#statements-downvote)\)
 
     TheBigDB.show("id-of-the-sentence")
     TheBigDB.upvote("id-of-the-sentence")
@@ -38,7 +38,7 @@ That's it!
 If you want more details on what is sent and what is received, you can use the generic TheBigDB::Statement method. It returns a TheBigDB::Request object.
 It has several readable attributes:
     
-    request = TheBigDB::Statement(:search, {nodes: ["iPhone", "weight"]})
+    request = TheBigDB::Statement(:search, {nodes: {subject: "iPhone", property: "weight"}})
     request.http              # Net::HTTP
     request.http_request      # subclass of Net::HTTPGenericRequest (Net::HTTP::Get or Net::HTTP::Post)
     request.http_response     # subclass of Net::HTTPResponse (e.g. Net::HTTPOK)

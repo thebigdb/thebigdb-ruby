@@ -48,11 +48,11 @@ module TheBigDB
   end
 
   # Shortcuts to actions
-  def self.search(*nodes)
+  def self.search(nodes = {})
     StatementRequest.new("search").with("nodes" => nodes)
   end
 
-  def self.create(*nodes)
+  def self.create(nodes = {})
     StatementRequest.new("create").with("nodes" => nodes)
   end
 
