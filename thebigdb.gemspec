@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.authors = ["Christophe Maximin"]
   s.email = "christophe@thebigdb.com"
   s.homepage = "http://thebigdb.com"
+  s.licenses = ['MIT']
 
   s.platform = Gem::Platform::RUBY
 
