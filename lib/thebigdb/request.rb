@@ -88,7 +88,7 @@ module TheBigDB
       TheBigDB.before_request_execution.call(self)
 
       # Here is where the request is actually executed
-      @http_response = @http.request(@http_request)
+      @http_response = TheBigDB.http_request_executor.call(@http, @http_request)
 
       # Setting @response
       begin

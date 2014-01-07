@@ -72,15 +72,35 @@ You can modify the TheBigDB module with several configuration options:
       # your code here
     end
 
+### Caching
+
+If you want to cache the http requests made, you can change the option ``http_request_executor``:
+
+    TheBigDB.http_request_executor # default: Proc.new {|http, http_request| http.request(http_request) }
+    
+If you're using Rails caching system, you may want to do something like this:
+    
+    TheBigDB.http_request_executor = Proc.new do |http, http_request|
+      cache_key = "thebigdb-request-" + Digest::SHA1.hexdigest(Marshal.dump(http_request))
+      
+      marshalled_response = Rails.cache.fetch(cache_key) do
+        Marshal.dump(http.request(http_request))
+      end
+      
+      Marshal.load(marshalled_response)
+    end
+    
+Please remember that all the callbacks (``before_request_execution`` and ``after_request_execution``) will still be executed: ``http_request_executor`` only surrounds the actual execution of the http request by the ``http`` object.
 
 ## Contributing
 
 Don't hesitate to send a pull request !
 
 ## Testing
-  
-    rspec spec/
+    
+    $ bundle install
+    $ bundle exec rspec spec/
 
 ## License
 
-This software is distributed under the MIT License. Copyright (c) 2013, Christophe Maximin <christophe@thebigdb.com>
+This software is distributed under the MIT License. Copyright (c) 2013-2014, Christophe Maximin <christophe@thebigdb.com>

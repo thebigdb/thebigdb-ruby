@@ -25,7 +25,8 @@ module TheBigDB
     "verify_ssl_certificates" => false,
     "before_request_execution" => Proc.new{},
     "after_request_execution" => Proc.new{},
-    "raise_on_api_status_error" => false
+    "raise_on_api_status_error" => false,
+    "http_request_executor" => Proc.new {|http, http_request| http.request(http_request) }
   }
 
   DEFAULT_CONFIGURATION.each_key do |configuration_key|
